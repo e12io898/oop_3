@@ -1,4 +1,21 @@
-class Student:
+class BaseMethod:
+    def avg(self):
+        average = []
+        for i in self.grades.values():
+            for j in i:
+                average.append(j)
+        self.avg_grades = round((sum(average) / len(average)), 1)
+
+    def __eq__(self, other):
+        return self.avg_grades == other.avg_grades
+
+    def __lt__(self, other):
+        return self.avg_grades < other.avg_grades
+
+    def __le__(self, other):
+        return self.avg_grades <= other.avg_grades
+
+class Student(BaseMethod):
     def __init__(self, name, surname, gender):
         self.name = name
         self.surname = surname
@@ -19,13 +36,6 @@ class Student:
         else:
             return 'Ошибка'
 
-    def avg(self):
-        average = []
-        for i in self.grades.values():
-            for j in i:
-                average.append(j)
-        self.avg_grades = round((sum(average) / len(average)), 1)
-
     def __str__(self):
         self.avg()
         res = (f'Имя: {self.name}\n'
@@ -35,15 +45,6 @@ class Student:
                f'{", ".join(self.courses_in_progress)}\n'
                f'Завершенные курсы: {", ".join(self.finished_courses)}')
         return res
-
-    def __eq__(self, other):
-        return self.avg_grades == other.avg_grades
-
-    def __lt__(self, other):
-        return self.avg_grades < other.avg_grades
-
-    def __le__(self, other):
-        return self.avg_grades <= other.avg_grades
         
 class Mentor:
     def __init__(self, name, surname):
@@ -51,18 +52,11 @@ class Mentor:
         self.surname = surname
         self.courses_attached = []
 
-class Lecturer(Mentor):
+class Lecturer(Mentor, BaseMethod):
     def __init__(self, name, surname):
         super().__init__(name, surname)
         self.grades = {}
         self.avg_grades = 0
-
-    def avg(self):
-        average = []
-        for i in self.grades.values():
-            for j in i:
-                average.append(j)
-        self.avg_grades = round((sum(average) / len(average)), 1)
 
     def __str__(self):
         self.avg()
@@ -70,15 +64,6 @@ class Lecturer(Mentor):
                f'Фамилия: {self.surname}\n'
                f'Средняя оценка за лекции: {self.avg_grades}')
         return res
-
-    def __eq__(self, other):
-        return self.avg_grades == other.avg_grades
-
-    def __lt__(self, other):
-        return self.avg_grades < other.avg_grades
-
-    def __le__(self, other):
-        return self.avg_grades <= other.avg_grades
 
 class Reviewer(Mentor):
     def rate_hw(self, student, course, grade):
